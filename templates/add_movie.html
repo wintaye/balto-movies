@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+<form class="center" action="/add_movie" method="post">
+
+    <label for="title">Title</label>
+    <input name="title" type="text">
+    <br>
+    <p><label for="release_year">Release Year(YYYY format):</label>
+    <input name="release_year" type="text">
+    <br>
+    <p><label for="origin_ethnicity">Origin/Ethnicity:</label>
+    <input name="origin_ethnicity" type="text">
+    <br>
+    <p><label for="cast">Notable Cast:</label>
+    <input name="cast" type="text">
+    <br>
+    <p><label for="genre">Genre:</label>
+    <input name="genre" type="text">
+    <br>
+    <p><label for="wiki">Wiki URL:</label>
+    <input name="wiki" type="text">
+    <br>
+    <p><label for="plot">Plot Description:</label>
+    <textarea rows="4" cols="50" name="plot"></textarea></p>
+
+    <input id="submit_button" type="submit" value="Add!">
+</form>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Movies in Database</h2>
+<ul>
+    {% for movie in movies %}
+        <li>
+            <h3><p class="center"><a href='movie?id={{movie.id}}'>{{movie.title}}</a></p></h3>
+            <p class="center">{{movie.release_year}}</p>
+            <p class="center">{{movie.origin_ethnicity}}</p>
+            <p class="center">{{movie.cast}}</p>
+            <p class="center">{{movie.genre}}</p>
+            <p class="center">{{movie.plot}}</p>
+            <p class="center">{{movie.wiki}}</p>
+        </li>
+    {% endfor %}
+</ul> 
+{% endblock %}
+
