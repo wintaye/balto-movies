@@ -7,6 +7,7 @@
 <ul>
     {% for movie in movies %}
         <li>
+            <form action="/edit" method="post">
             <h3><p class="center"><a href='movie?id={{movie.id}}'>{{movie.title}}</a></p></h3>
             <p class="center">{{movie.release_year}}</p>
             <p class="center">{{movie.director}}</p>
@@ -15,6 +16,8 @@
             <p class="center">{{movie.genre}}</p>
             <p class="center">{{movie.plot}}</p>
             <p class="center">{{movie.wiki}}</p>
+            <p><button name="edit" type="submit" value='{{movie.id}}'>Edit</button></p>
+            </form>
         </li>
     {% endfor %}
 </ul>

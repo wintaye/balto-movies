@@ -12,7 +12,7 @@
                 <p class="center">{{movie.genre}}</p>
                 <p class="center">{{movie.plot}}</p>
                 <p class="center">{{movie.wiki}}</p>
-                <form class="center" action="/movie" method="post"><input type="checkbox" name="delete" value="True">Delete Movie?</p>
+                <form class="center" action="/movie" method="post"><input type="checkbox" name="delete" value='{{movie.id}}'>Delete Movie?</p>
         </li>
 </ul>  
 <input id="submit_button" type="submit" value="Submit"></form>

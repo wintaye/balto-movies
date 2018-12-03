@@ -2,6 +2,7 @@ from flask import Flask, request, redirect, render_template, flash, session
 from flask_sqlalchemy import SQLAlchemy
 import jinja2
 import os
+import urllib.parse as urlparse
 # from SQLAlchemy import or_
 # from search_formula import search_by_column
 
@@ -41,8 +42,6 @@ class Movie(db.Model):
             return True
         else:
             return False
-    
-
 
 @app.route("/", methods=['GET','POST'])
 def index():
@@ -71,28 +70,34 @@ def add_movie():
     else:
         return render_template('add_movie.html', title="Add a new movie!")
 
-@app.route("/movie", methods=['GET', 'POST'])
+@app.route("/movie", methods=['GET'])
 def display_movies():
     id = request.args.get('id')
-    if request.method == 'GET':
-        id = request.args.get('id')
-        if id:
-            movie = Movie.query.filter_by(id=id).first()
-            return render_template('display_single_movie.html', movie=movie, title=movie.title)
-        else:
-            movies = Movie.query.all()
-            return render_template('display_all_movies.html', movies=movies)
+    if id:
+        movie = Movie.query.filter_by(id=id).first()
+        return render_template('display_single_movie.html', movie=movie, title=movie.title)
     else:
-        #POST request
-        delete = request.form['delete']
-        if delete == "True":
-                #problem, getting here but not finding id
-            movie_to_delete = Movie.query.filter_by(id=id).first()
-            db.session.delete(movie_to_delete)
-            db.session.commit()
-            return redirect("/")
-        else:
-            return redirect("/movie")
+        movies = Movie.query.all()
+        return render_template('display_all_movies.html', movies=movies)
+    
+@app.route("/movie", methods=['POST'])
+def delete_movie():
+    # id = request.args.get('id')
+    # print(id)
+    delete = request.form['delete']
+    print(delete)
+    if delete:
+        id = delete
+        print(id)
+        movie = Movie.query.filter_by(id=id).first()
+        print(movie)
+            # movie_to_delete = Movie.query.filter_by(id=id).first()
+        db.session.delete(movie)
+        db.session.commit()
+        return redirect("/")
+    else:
+        print("GOING TO REDIRECT")
+        return redirect("/movie")
 
 def search_by_column(searchterm, movie, column):
     if column == "title":
@@ -152,16 +157,12 @@ def search_all(searchterm, movie):
     #     return True
     elif searchterm in director:
         return True
-
     elif searchterm in origin:
         return True
-
     elif searchterm in cast:
         return True
-
     elif searchterm in genre:
         return True
-
     elif searchterm in plot:
         return True
     else: 
@@ -199,7 +200,11 @@ def search_movies():
         #request is get
         return render_template("search_form.html")
                 
-
+# @app.route("/edit", methods=["POST"])
+# def edit_item():
+#     id = request.form['edit']
+#     movie = Movie.query.filter_by(id=id).first()
+    
 
 
 if __name__=='__main__':
