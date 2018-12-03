@@ -2,9 +2,7 @@ from flask import Flask, request, redirect, render_template, flash, session
 from flask_sqlalchemy import SQLAlchemy
 import jinja2
 import os
-import urllib.parse as urlparse
-# from SQLAlchemy import or_
-# from search_formula import search_by_column
+from search_formula import search_all, search_by_column, update_movies
 
 template_dir = os.path.join(os.path.dirname(__file__), 'templates')
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir), autoescape = True)
@@ -82,99 +80,22 @@ def display_movies():
     
 @app.route("/movie", methods=['POST'])
 def delete_movie():
-    # id = request.args.get('id')
-    # print(id)
     delete = request.form['delete']
     print(delete)
     if delete:
         id = delete
-        print(id)
         movie = Movie.query.filter_by(id=id).first()
-        print(movie)
-            # movie_to_delete = Movie.query.filter_by(id=id).first()
         db.session.delete(movie)
         db.session.commit()
-        return redirect("/")
-    else:
-        print("GOING TO REDIRECT")
         return redirect("/movie")
-
-def search_by_column(searchterm, movie, column):
-    if column == "title":
-        title = movie.title
-        title = title.lower()
-        if searchterm in title:
-            return True
-    # elif column == "release_year":
-    #     release = movie.release_year
-    #     if searchterm in release:
-    #         return True
-    elif column == "director":
-        director = movie.director
-        director = director.lower()
-        if searchterm in director:
-            return True
-    elif column == "origin_ethnicity":
-        origin = movie.origin_ethnicity 
-        origin = origin.lower()   
-        if searchterm in origin:  
-            return True
-    elif column == "cast":
-        cast = movie.cast
-        cast = cast.lower()
-        if searchterm in cast:
-            return True
-    elif column == "genre":
-        genre = movie.genre
-        genre = genre.lower()
-        if searchterm in genre:
-            return True
-    elif column == "plot":
-        plot = movie.plot
-        plot = plot.lower()
-        if searchterm in plot:
-            return True
     else:
-        return False
-        
-def search_all(searchterm, movie):
-    title = movie.title
-    title = title.lower()
-    director = movie.director
-    director = director.lower()
-    origin = movie.origin_ethnicity
-    origin = origin.lower()
-    cast = movie.cast
-    cast = cast.lower()
-    genre = movie.genre
-    genre = genre.lower()
-    plot = movie.plot
-    plot = plot.lower()
-
-    if searchterm in title:
-        return True
-    # elif searchterm in movie.release_year:
-    #     return True
-    elif searchterm in director:
-        return True
-    elif searchterm in origin:
-        return True
-    elif searchterm in cast:
-        return True
-    elif searchterm in genre:
-        return True
-    elif searchterm in plot:
-        return True
-    else: 
-        return False
+        return redirect("/movie")
 
 @app.route("/search", methods=['GET','POST'])
 def search_movies():
     if request.method == 'POST':
         list_of_movies = []
-        #list_of_columns = ["title", "release_year", "director", "origin_ethnicity", "cast", "genre", "plot"]
         movies = Movie.query.all()
-        # column = request.form['column']
         searchterm = request.form['searchterm']
         searchterm = searchterm.lower()
         print(searchterm)
@@ -185,27 +106,35 @@ def search_movies():
             if aValue == True:
                 list_of_movies.append(movie)
         return render_template("display_all_movies.html", movies=list_of_movies)
-            
-            # # for movie in movies:
-            # #     for item in list_of_columns:
-            # #         aValue = movie.get[1]
-            # #         if searchterm in aValue:
-            # #             list_of_movies.append(movie)
-            # if len(list_of_movies) > 0:
-            #     return render_template("display_all_movies.html", movies=list_of_movies)
             # else:
             #     flash("No Search Results")
             #     return redirect("/search")
     else:
-        #request is get
         return render_template("search_form.html")
                 
-# @app.route("/edit", methods=["POST"])
-# def edit_item():
-#     id = request.form['edit']
-#     movie = Movie.query.filter_by(id=id).first()
-    
+@app.route("/edit", methods=['GET', 'POST'])
+def retrieve_edit_view():
+    if request.method == 'POST':
+        id = request.form['edit']
+        movie = Movie.query.filter_by(id=id).first()
+        return render_template("edit.html", movie=movie)
+    else:
+        return redirect("/movie")
 
+@app.route("/editmovie", methods=['POST'])
+def edit_movie():
+    title = request.form['title']
+    release_year = request.form['release_year']
+    director = request.form['director']
+    origin = request.form['origin_ethnicity']
+    cast = request.form['cast']
+    genre = request.form['genre']
+    wiki = request.form['wiki']
+    plot = request.form['plot']
+    movie = Movie.query.filter_by(id=id).first()
+    updated_movie = update_movies(title, release_year, director, origin, cast, genre, wiki, plot, movie)
+    db.session.commit()
+    return redirect("/movie")
 
 if __name__=='__main__':
     app.run()

@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>Edit {{movie.title}} </h1>
-<form class="center" action="/edit" method="post">
+<h1>Edit Movie:{{movie.title}} </h1>
+<form class="center" action="/editmovie" method="post">
 
     <label for="title">Title:</label>
     <input name="title" type="text">
@@ -27,6 +27,6 @@
     <p><label for="plot">Plot Description:</label>
     <textarea rows="4" cols="50" name="plot"></textarea></p>
 
-    <input id="submit_button" type="submit" value="Add!">
+    <input id="submit_button" type="submit" value="Update">
 </form>
 {% endblock %}
