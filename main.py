@@ -1,8 +1,8 @@
-from flask import Flask, request, redirect, render_template, flash, session
+from flask import Flask, request, redirect, render_template, flash
 from flask_sqlalchemy import SQLAlchemy
 import jinja2
 import os
-from search_formula import search_all, search_by_column, update_movies
+from formulas import search_all, search_by_column, update_movies
 
 template_dir = os.path.join(os.path.dirname(__file__), 'templates')
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir), autoescape = True)
@@ -90,6 +90,8 @@ def delete_movie():
         return redirect("/movie")
     else:
         return redirect("/movie")
+        #http://flask-sqlalchemy.pocoo.org/2.3/queries/
+        #refreshed my memory re: flask query syntax 
 
 @app.route("/search", methods=['GET','POST'])
 def search_movies():
@@ -111,6 +113,9 @@ def search_movies():
             #     return redirect("/search")
     else:
         return render_template("search_form.html")
+    
+    #https://www.w3schools.com/tags/att_input_type_radio.asp
+    #never used radio button before so I looked it up here
                 
 @app.route("/edit", methods=['GET', 'POST'])
 def retrieve_edit_view():
@@ -132,9 +137,11 @@ def edit_movie():
     wiki = request.form['wiki']
     plot = request.form['plot']
     movie = Movie.query.filter_by(id=id).first()
-    updated_movie = update_movies(title, release_year, director, origin, cast, genre, wiki, plot, movie)
+    update_movies(title, release_year, director, origin, cast, genre, wiki, plot, movie)
     db.session.commit()
     return redirect("/movie")
+    #https://stackoverflow.com/questions/6699360/flask-sqlalchemy-update-a-rows-information
+    #never updated an object already committed to db, so I looked it up here
 
 if __name__=='__main__':
     app.run()
