@@ -1,12 +1,15 @@
 {% extends "base.html" %}
 {% block content %}
-<form class="center" action="/add_movie" method="post">
+<form class="center" action="/addmovie" method="post">
 
-    <label for="title">Title</label>
+    <label for="title">Title:</label>
     <input name="title" type="text">
     <br>
     <p><label for="release_year">Release Year(YYYY format):</label>
     <input name="release_year" type="text">
+    <br>
+    <p><label for="director">Director:</label>
+    <input name="director" type="text">
     <br>
     <p><label for="origin_ethnicity">Origin/Ethnicity:</label>
     <input name="origin_ethnicity" type="text">

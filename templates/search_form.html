@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Search</h1><br><br>
+<!-- Select Category: -->
+<form class="center" action="/search" method="post">
+    <!-- <input type="radio" name="column" value="all"> All
+    <input type="radio" name="column" value="title">Title
+    <input type="radio" name="column" value="release_year">Release Year
+    <input type="radio" name="column" value="director">Director
+    <input type="radio" name="column" value="origin_ethnicity">Origin/Ethnicity
+    <input type="radio" name="column" value="cast">Cast
+    <input type="radio" name="column" value="genre">Genre
+    <input type="radio" name="column" value="plot">Plot
+    <br> -->
+    <label for="searchterm">Enter Search term:</label><br>
+    <input name="searchterm" type="text">
+    <br>
+    <input id="submit_button" type="submit" value="Search">
+
+</form>
+{% endblock %}

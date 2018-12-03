@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1>{{movie.title}}</h1>
+<ul>
+        <li>
+                <h3><p class="center"><a href='movie?id={{movie.id}}'>{{movie.title}}</a></p></h3>
+                <p class="center">{{movie.release_year}}</p>
+                <p class="center">{{movie.director}}</p>
+                <p class="center">{{movie.origin_ethnicity}}</p>
+                <p class="center">{{movie.cast}}</p>
+                <p class="center">{{movie.genre}}</p>
+                <p class="center">{{movie.plot}}</p>
+                <p class="center">{{movie.wiki}}</p>
+                <form class="center" action="/movie" method="post"><input type="checkbox" name="delete" value="True">Delete Movie?</p>
+        </li>
+</ul>  
+<input id="submit_button" type="submit" value="Submit"></form>
+{% endblock %}
+

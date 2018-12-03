@@ -1,11 +1,15 @@
 {% extends "base.html" %}
 {% block content %}
-<h2>Movies in Database</h2>
+<h2>All Movies in Database</h2>
+<br>
+<h3><p class="center"><a href="/search">Search Movies</a></p></h3>
+<br>
 <ul>
     {% for movie in movies %}
         <li>
             <h3><p class="center"><a href='movie?id={{movie.id}}'>{{movie.title}}</a></p></h3>
             <p class="center">{{movie.release_year}}</p>
+            <p class="center">{{movie.director}}</p>
             <p class="center">{{movie.origin_ethnicity}}</p>
             <p class="center">{{movie.cast}}</p>
             <p class="center">{{movie.genre}}</p>
@@ -13,6 +17,6 @@
             <p class="center">{{movie.wiki}}</p>
         </li>
     {% endfor %}
-</ul> 
+</ul>
 {% endblock %}
 
