@@ -4,35 +4,43 @@
 <form class="center" action="/editmovie" method="post">
 
     <label for="title">Title:</label>
+    <p class="center">Former Title: {{movie.title}}</p>
     <input type="hidden" id="movie_id" name="movie_id" value={{movie.id}}>
     <br>
     <input name="title" type="text">
     <br>
     <p><label for="release_year">Release Year(YYYY):</label>
+    <p class="center">Former Release Year: {{movie.release_year}}</p>
     <br>
     <input name="release_year" type="text">
     <br>
     <p><label for="director">Director:</label>
+    <p class="center">Former Director: {{movie.director}}</p>
     <br>
     <input name="director" type="text">
     <br>
     <p><label for="origin_ethnicity">Origin/Ethnicity:</label>
+    <p class="center">Former Origin/Ethnicity: {{movie.origin_ethnicity}}</p>
     <br>
     <input name="origin_ethnicity" type="text">
     <br>
     <p><label for="cast">Notable Cast:</label>
+    <p class="center">Former Cast: {{movie.cast}}</p>
     <br>
     <input name="cast" type="text">
     <br>
     <p><label for="genre">Genre:</label>
+    <p class="center">Former Genre: {{movie.genre}}</p>
     <br>
     <input name="genre" type="text">
     <br>
     <p><label for="wiki">Wiki URL:</label>
+    <p class="center">Former Wiki: {{movie.wiki}}</p>
     <br>
     <input name="wiki" type="text">
     <br>
     <p><label for="plot">Plot Description:</label>
+    <p class="center">Former Plot: {{movie.plot}}</p>
     <br>
     <textarea rows="4" cols="50" name="plot"></textarea></p>
 

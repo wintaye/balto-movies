@@ -2,7 +2,6 @@ from flask import Flask, request, redirect, render_template, flash
 from flask_sqlalchemy import SQLAlchemy
 import jinja2
 import os
-import pandas as pd
 from formulas import search_all, search_by_column, update_movies
 
 template_dir = os.path.join(os.path.dirname(__file__), 'templates')
@@ -42,8 +41,6 @@ class Movie(db.Model):
         else:
             return False
    
-
-
 @app.route("/", methods=['GET','POST'])
 def index():
     return render_template('home_view.html', title="Welcome to the Balto Movie Database!")
@@ -80,7 +77,15 @@ def display_or_delete_movies():
             return render_template('display_single_movie.html', movie=movie, title=movie.title)
         else:
             movies = Movie.query.all()
-            return render_template('display_all_movies.html', movies=movies)
+            cast_dictionary = {}
+            for movie in movies:
+                #for each movie, I want to create a list of cast members
+                cast_long_string = movie.cast
+                cast_list = cast_long_string.split(", ")
+                #returns list of cast members, hurray!
+                cast_dictionary[movie] = cast_list
+                #append list to cast_dictionary with key == movie
+            return render_template('display_all_movies.html', movies=movies, cast_dictionary=cast_dictionary)
     else:
         delete = request.form['delete']
         if delete:
@@ -101,11 +106,8 @@ def search_movies():
         movies = Movie.query.all()
         searchterm = request.form['searchterm']
         searchterm = searchterm.lower()
-        print(searchterm)
         for movie in movies:
-            print(movie)
             aValue = search_all(searchterm, movie)
-            print(aValue)
             if aValue == True:
                 list_of_movies.append(movie)
         return render_template("display_all_movies.html", movies=list_of_movies)

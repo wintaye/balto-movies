@@ -10,9 +10,14 @@
             <form action="/edit" method="post">
             <h3><p class="center"><a href='movie?id={{movie.id}}'>{{movie.title}}</a></p></h3>
             <p class="center"><b>Release Year: </b>{{movie.release_year}}</p>
-            <p class="center"><b>Director: </b>{{movie.director}}</p>
+            <p class="center"><b>Director: </b><a href="https://www.imdb.com/find?ref_=nv_sr_fn&q={{movie.director}}&s=all">{{movie.director}}</a></p>
             <p class="center"><b>Origin/Ethnicity: </b>{{movie.origin_ethnicity}}</p>
-            <p class="center"><b>Notable Cast: </b>{{movie.cast}}</p>
+            <p class="center"><b>Notable Cast: </b>
+            {% for item in cast_dictionary[movie] %}
+
+                <a href="https://www.imdb.com/find?ref_=nv_sr_fn&q={{item}}&s=all">{{item}}</a>
+            
+            {% endfor %}</p>
             <p class="center"><b>Genre: </b>{{movie.genre}}</p>
             <p class="center"><b>Plot: </b>{{movie.plot}}</p>
             <p class="center"><b>Wiki URL: </b><a href="{{ movie.wiki }}">{{movie.wiki}}</a></p>
