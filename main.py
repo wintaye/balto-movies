@@ -2,6 +2,7 @@ from flask import Flask, request, redirect, render_template, flash
 from flask_sqlalchemy import SQLAlchemy
 import jinja2
 import os
+import pandas as pd
 from formulas import search_all, search_by_column, update_movies
 
 template_dir = os.path.join(os.path.dirname(__file__), 'templates')
@@ -40,6 +41,8 @@ class Movie(db.Model):
             return True
         else:
             return False
+   
+
 
 @app.route("/", methods=['GET','POST'])
 def index():
@@ -56,11 +59,11 @@ def add_movie():
         new_genre = request.form['genre']
         new_plot = request.form['plot']
         new_wiki = request.form['wiki']
-        if not new_title and new_release_year and new_director and new_origin_ethnicity and new_cast and new_genre and new_plot and new_wiki:
+        if not new_title and not new_release_year and not new_director and not new_origin_ethnicity and not new_cast and not new_genre and not new_plot and not new_wiki:
             flash("Please fill out all forms.")
             return render_template('add_movie.html', title="Add a new movie!")
         else: 
-            new_movie = Movie(new_title, new_release_year, new_director, new_origin_ethnicity, new_cast, new_genre, new_plot, new_wiki)
+            new_movie = Movie(new_title, new_release_year, new_director, new_origin_ethnicity, new_cast, new_genre, new_wiki, new_plot)
             db.session.add(new_movie)
             db.session.commit()
             url = "/movie"
@@ -68,28 +71,26 @@ def add_movie():
     else:
         return render_template('add_movie.html', title="Add a new movie!")
 
-@app.route("/movie", methods=['GET'])
-def display_movies():
-    id = request.args.get('id')
-    if id:
-        movie = Movie.query.filter_by(id=id).first()
-        return render_template('display_single_movie.html', movie=movie, title=movie.title)
+@app.route("/movie", methods=['GET', 'POST'])
+def display_or_delete_movies():
+    if request.method == 'GET':
+        id = request.args.get('id')
+        if id:
+            movie = Movie.query.filter_by(id=id).first()
+            return render_template('display_single_movie.html', movie=movie, title=movie.title)
+        else:
+            movies = Movie.query.all()
+            return render_template('display_all_movies.html', movies=movies)
     else:
-        movies = Movie.query.all()
-        return render_template('display_all_movies.html', movies=movies)
-    
-@app.route("/movie", methods=['POST'])
-def delete_movie():
-    delete = request.form['delete']
-    print(delete)
-    if delete:
-        id = delete
-        movie = Movie.query.filter_by(id=id).first()
-        db.session.delete(movie)
-        db.session.commit()
-        return redirect("/movie")
-    else:
-        return redirect("/movie")
+        delete = request.form['delete']
+        if delete:
+            id = delete
+            movie = Movie.query.filter_by(id=id).first()
+            db.session.delete(movie)
+            db.session.commit()
+            return redirect("/movie")
+        else:
+            return redirect("/movie")
         #http://flask-sqlalchemy.pocoo.org/2.3/queries/
         #refreshed my memory re: flask query syntax 
 
@@ -128,6 +129,7 @@ def retrieve_edit_view():
 
 @app.route("/editmovie", methods=['POST'])
 def edit_movie():
+    movie_id = request.form['movie_id']
     title = request.form['title']
     release_year = request.form['release_year']
     director = request.form['director']
@@ -136,10 +138,11 @@ def edit_movie():
     genre = request.form['genre']
     wiki = request.form['wiki']
     plot = request.form['plot']
-    movie = Movie.query.filter_by(id=id).first()
+    movie = Movie.query.filter_by(id=movie_id).first()
     update_movies(title, release_year, director, origin, cast, genre, wiki, plot, movie)
     db.session.commit()
     return redirect("/movie")
+    #https://www.w3schools.com/tags/att_input_type_hidden.asp
     #https://stackoverflow.com/questions/6699360/flask-sqlalchemy-update-a-rows-information
     #never updated an object already committed to db, so I looked it up here
 

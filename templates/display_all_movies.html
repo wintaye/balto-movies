@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-<h2>All Movies in Database</h2>
+<h2><p class="center">All Movies in Database</p></h2>
 <br>
 <h3><p class="center"><a href="/search">Search Movies</a></p></h3>
 <br>
@@ -9,14 +9,14 @@
         <li>
             <form action="/edit" method="post">
             <h3><p class="center"><a href='movie?id={{movie.id}}'>{{movie.title}}</a></p></h3>
-            <p class="center">{{movie.release_year}}</p>
-            <p class="center">{{movie.director}}</p>
-            <p class="center">{{movie.origin_ethnicity}}</p>
-            <p class="center">{{movie.cast}}</p>
-            <p class="center">{{movie.genre}}</p>
-            <p class="center">{{movie.plot}}</p>
-            <p class="center">{{movie.wiki}}</p>
-            <p><button name="edit" type="submit" value='{{movie.id}}'>Edit</button></p>
+            <p class="center"><b>Release Year: </b>{{movie.release_year}}</p>
+            <p class="center"><b>Director: </b>{{movie.director}}</p>
+            <p class="center"><b>Origin/Ethnicity: </b>{{movie.origin_ethnicity}}</p>
+            <p class="center"><b>Notable Cast: </b>{{movie.cast}}</p>
+            <p class="center"><b>Genre: </b>{{movie.genre}}</p>
+            <p class="center"><b>Plot: </b>{{movie.plot}}</p>
+            <p class="center"><b>Wiki URL: </b><a href="{{ movie.wiki }}">{{movie.wiki}}</a></p>
+            <p class="center"><button name="edit" type="submit" value='{{movie.id}}'>Edit</button></p>
             </form>
         </li>
     {% endfor %}

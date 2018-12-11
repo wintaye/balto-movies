@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>Search</h1><br><br>
-Select Category:
+<h1><p class="center">Search</h1></p><br><br>
+<p class="center">Select Category:</p>
 <form class="center" action="/search" method="post">
     <input type="radio" name="column" value="all"> All
     <input type="radio" name="column" value="title">Title
@@ -11,7 +11,7 @@ Select Category:
     <input type="radio" name="column" value="cast">Cast
     <input type="radio" name="column" value="genre">Genre
     <input type="radio" name="column" value="plot">Plot
-    <br>
+    <br><br><br>
     <label for="searchterm">Enter Search term:</label><br>
     <input name="searchterm" type="text">
     <br>
